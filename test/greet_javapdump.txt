@@ -1,0 +1,13 @@
+Compiled from "Greet.java"
+public class Greet {
+  public Greet();
+    Code:
+       0: aload_0
+       1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+       4: return
+
+  public static java.lang.String Greet();
+    Code:
+       0: ldc           #7                  // String Hello, CVM!
+       2: areturn
+}
