@@ -8,4 +8,4 @@
 A toy Java Virtual Machine coded in C
 
 ## Referances / Docs
-![Oracle's JVM Spec](https://docs.oracle.com/javase/specs/jvms/se14/html/)
+[Oracle's JVM Spec](https://docs.oracle.com/javase/specs/jvms/se14/html/)
