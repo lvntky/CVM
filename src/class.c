@@ -1,39 +1,61 @@
-#include "../include/class.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <string.h>
+#include <arpa/inet.h>
 
-char *get_bytecode(const char *filename)
-{
-  FILE *fileptr = fopen(filename, "rb");
-  char *buffer = (char *)malloc(2 * sizeof(char));
-  buffer[0] = '\0';
-  unsigned char byte;
-  while(fread(&byte, sizeof(byte), 1, fileptr) == 1) {
-    char *temp = (char *) malloc(3 * sizeof(char));
-    sprintf(temp, "%02x", byte);
-    buffer = (char *) realloc(buffer, strlen(buffer) + strlen(temp) + 1);
-    strcat(buffer, temp);
-    free(temp);
-  }
-  fclose(fileptr);
-  return buffer;
-}
-classfile read_class(char *bytecode, classfile class_elements)
-{
-  char *sub;
-  int interval = 0;
-  memcpy(class_elements.magic, bytecode, interval + 8);
-  interval += 8;
-  class_elements.magic[interval + 1] = '\0';
-  return class_elements;
+struct class_file_header {
+    uint32_t magic;
+    uint16_t minor_version;
+    uint16_t major_version;
+};
+
+int read_class_file(const char *filename, uint8_t *buffer, size_t buffer_size) {
+    FILE *file_ptr;
+    size_t read_size;
+
+    file_ptr = fopen(filename, "rb");
+    if (file_ptr == NULL) {
+        printf("Error: Failed to open file\n");
+        return -1;
+    }
+
+    read_size = fread(buffer, sizeof(uint8_t), buffer_size, file_ptr);
+
+    fclose(file_ptr);
+
+    return (int)read_size;
 }
 
-//driver
-int main(int argc, char** argv)
-{
-  classfile class_elements;
-  read_class(get_bytecode(argv[1]), class_elements);
-  printf("%s", class_elements.magic);
-  return 0;
+int parse_class_file_header(const uint8_t *buffer, struct class_file_header *header) {
+    header->magic = ntohl(*(uint32_t*)buffer);
+    header->minor_version = ntohs(*(uint16_t*)(buffer + 4));
+    header->major_version = ntohs(*(uint16_t*)(buffer + 6));
+
+    return 0;
+}
+
+int main(int argc, char *argv[]) {
+    uint8_t buffer[8];
+    struct class_file_header header;
+
+    if (argc != 2) {
+        printf("Usage: %s <class file>\n", argv[0]);
+        exit(1);
+    }
+
+    if (read_class_file(argv[1], buffer, sizeof(buffer)) < 0) {
+        exit(1);
+    }
+
+    if (parse_class_file_header(buffer, &header) < 0) {
+        printf("Error: Failed to parse class file header\n");
+        exit(1);
+    }
+
+    printf("Magic: %X\n", header.magic);
+    printf("Minor version: %d\n", header.minor_version);
+    printf("Major version: %d\n", header.major_version);
+
+    return 0;
 }
