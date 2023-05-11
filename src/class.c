@@ -16,7 +16,24 @@ char *get_bytecode(const char *filename)
     strcat(buffer, temp);
     free(temp);
   }
-
-
+  fclose(fileptr);
   return buffer;
+}
+classfile read_class(char *bytecode, classfile class_elements)
+{
+  char *sub;
+  int interval = 0;
+  memcpy(class_elements.magic, bytecode, interval + 8);
+  interval += 8;
+  class_elements.magic[interval + 1] = '\0';
+  return class_elements;
+}
+
+//driver
+int main(int argc, char** argv)
+{
+  classfile class_elements;
+  read_class(get_bytecode(argv[1]), class_elements);
+  printf("%s", class_elements.magic);
+  return 0;
 }
