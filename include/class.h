@@ -1,17 +1,12 @@
-#ifndef __CLASS_H
-#define __CLASS_H
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdint.h>
-typedef struct
+#ifndef __CLASS_H__
+#define __CLASS_H__
+#include <inttypes.h>
+typedef struct classfile
 {
   uint32_t magic;
-  uint16_t minor;
-  uint16_t major;
-
+  uint16_t minor_version;
+  uint16_t major_version;
 }classfile;
 
-char *get_bytecode(const char* filename);
-classfile parse_class(const char *bytecode);
+classfile read_classfile(const char* filename);
 #endif
