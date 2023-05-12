@@ -163,3 +163,4 @@ replay_pid*
 .nfs*
 
 /src/class
+/src/hexdump
