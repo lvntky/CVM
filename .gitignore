@@ -163,6 +163,7 @@ replay_pid*
 .nfs*
 
 /src/class
+/src/constant
 /src/hexdump
 
 ### CMake ###
@@ -181,3 +182,5 @@ _deps
 ### CMake Patch ###
 # External projects
 *-prefix/
+
+cvm
