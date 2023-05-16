@@ -57,7 +57,7 @@ typedef struct CONSTANT_NameAndType_Info
 
 typedef struct CONSTANT_Utf8_Info
 {
-  uint16_t lenght;
+  uint16_t length;
   uint8_t* bytes;
 }CONSTANT_Utf8_Info;
 
@@ -120,6 +120,6 @@ typedef struct cp_info
   constant_info info;
 }cp_info;
 
-cp_info parse_constant_pool(const char* buffer);
+cp_info parse_constant_pool(const char* file_dest);
 void free_constant_pool(constant_info constant_info);
 #endif

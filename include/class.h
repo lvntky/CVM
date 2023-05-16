@@ -10,7 +10,7 @@ typedef struct classfile
   uint16_t minor_version;
   uint16_t major_version;
   uint16_t constant_pool_count;
-  constant_pool *constant_pool;
+  cp_info *constant_pool;
 }classfile;
 
 classfile read_classfile(const char* filename);

@@ -1,4 +1,5 @@
 #include "../include/class.h"
+#include "../include/constant_pool.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -25,8 +26,14 @@ classfile read_classfile(const char* filename)
   printf("CONSTANT POOL COUNT: %d\n", classfile.constant_pool_count);
   printf("==================== CLASS INFO END ====================\n");
   fclose(fileptr);
+  classfile.constant_pool = malloc(sizeof(cp_info) * classfile.constant_pool_count);
+  for (int i = 0; i < classfile.constant_pool_count; i++) {
+    printf("%d\n", i);
+    parse_constant_pool(fileptr);
+  }
   return classfile;
 }
+
 
 //driver
 // TODO: DELETE
