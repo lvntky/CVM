@@ -1,11 +1,10 @@
 #include "../include/constant_pool.h"
 #include "../include/class.h"
-#include "../include/bigendian.h"
 #include <stdio.h>
 #include <stdlib.h>
 
 
-cp_info cp_infoFromFile(FILE* fd){
+cp_info parse_constant_pool(FILE* fd){
     cp_info info;
     fread(&info.tag,sizeof(info.tag),1,fd); // tag len is 1
     switch (info.tag){
@@ -32,7 +31,6 @@ cp_info cp_infoFromFile(FILE* fd){
             break;
         case CONSTANT_Long:
         case CONSTANT_Double:
-            // 8 byte types takes two indexes in constant pool. So increase the counter by one extra.
             fread(&info.info._8BYTES_info.bytes,sizeof(info.info._8BYTES_info.bytes),1,fd);
             info.info._8BYTES_info.bytes = be64toh(info.info._8BYTES_info.bytes);
             break;
@@ -47,7 +45,6 @@ cp_info cp_infoFromFile(FILE* fd){
             info.info.utf8_info.length = be16toh(info.info.utf8_info.length);
             info.info.utf8_info.bytes = malloc(info.info.utf8_info.length); //leak
             fread(info.info.utf8_info.bytes,info.info.utf8_info.length,1,fd); // offsetting 2 bytes + reading utf8
-            //printf("len: %d, s: %.*s\n",info.info.utf8_info.length,info.info.utf8_info.length, info.info.utf8_info.bytes);
             break;
         case CONSTANT_MethodHandle:; // compiler wants a statement after label.
             fread(&info.info.methodHandle_info.reference_kind,sizeof(info.info.methodHandle_info.reference_kind),1,fd); // reference kind
@@ -71,44 +68,4 @@ cp_info cp_infoFromFile(FILE* fd){
     }
     return info;
 
-}
-
-classfile read_classfile(const char* filename)
-{
-  classfile classfile;
-  FILE *fileptr;
-  fileptr = fopen(filename, "rb");
-  printf("====================\tCLASS INFO START\t====================\n");
-  fread(&classfile.magic, sizeof(classfile.magic), 1, fileptr);
-  classfile.magic = be32toh(classfile.magic);
-  printf("MAGIC: %X\n", classfile.magic);
-
-  fread(&classfile.minor_version, sizeof(classfile.minor_version), 1, fileptr);
-  classfile.minor_version = be16toh(classfile.minor_version);
-  printf("MINOR: %d\n", classfile.minor_version);
-
-  fread(&classfile.major_version, sizeof(classfile.major_version), 1, fileptr);
-  classfile.major_version = be16toh(classfile.major_version);
-  printf("MAJOR: %d\n", classfile.major_version);
-
-  fread(&classfile.constant_pool_count, sizeof(classfile.constant_pool_count), 1, fileptr);
-  classfile.constant_pool_count = be16toh(classfile.constant_pool_count);
-  printf("CONSTANT POOL COUNT: %d\n", classfile.constant_pool_count);
-  printf("====================\tCLASS INFO END\t====================\n");
-  classfile.constant_pool = malloc(sizeof(cp_info) * (classfile.constant_pool_count - 1));
-
-  printf("\n====================\tCONST POOL INFO START\t====================\n");
-  for (int i = 0; i < classfile.constant_pool_count - 1; i++) {
-    classfile.constant_pool[i] = cp_infoFromFile(fileptr);
-    printf("%d:\t constant: %x\n", i, classfile.constant_pool[i].tag);
-  }
-  printf("====================\tCONST POOL INFO END\t====================\n");
-  fclose(fileptr);
-  return classfile;
-}
-
-int main(int argc, char**argv)
-{
-  read_classfile(argv[1]);
-  return 0;
 }

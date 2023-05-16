@@ -120,6 +120,6 @@ typedef struct cp_info
   constant_info info;
 }cp_info;
 
-cp_info parse_constant_pool(const char* file_dest);
+cp_info parse_constant_pool(FILE *file);
 void free_constant_pool(constant_info constant_info);
 #endif
