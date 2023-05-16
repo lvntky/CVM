@@ -78,7 +78,7 @@ classfile read_classfile(const char* filename)
   classfile classfile;
   FILE *fileptr;
   fileptr = fopen(filename, "rb");
-  printf("==================== CLASS INFO START ====================\n");
+  printf("====================\tCLASS INFO START\t====================\n");
   fread(&classfile.magic, sizeof(classfile.magic), 1, fileptr);
   classfile.magic = be32toh(classfile.magic);
   printf("MAGIC: %X\n", classfile.magic);
@@ -94,13 +94,15 @@ classfile read_classfile(const char* filename)
   fread(&classfile.constant_pool_count, sizeof(classfile.constant_pool_count), 1, fileptr);
   classfile.constant_pool_count = be16toh(classfile.constant_pool_count);
   printf("CONSTANT POOL COUNT: %d\n", classfile.constant_pool_count);
-  printf("==================== CLASS INFO END ====================\n");
-  fclose(fileptr);
+  printf("====================\tCLASS INFO END\t====================\n");
   classfile.constant_pool = malloc(sizeof(cp_info) * (classfile.constant_pool_count - 1));
+
+  printf("\n====================\tCONST POOL INFO START\t====================\n");
   for (int i = 0; i < classfile.constant_pool_count - 1; i++) {
     classfile.constant_pool[i] = cp_infoFromFile(fileptr);
     printf("%d:\t constant: %x\n", i, classfile.constant_pool[i].tag);
   }
+  printf("====================\tCONST POOL INFO END\t====================\n");
   fclose(fileptr);
   return classfile;
 }
