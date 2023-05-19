@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-field_info getField_Info(FILE* fd){
+field_info parse_filed_info(FILE* fd){
     field_info field;
     fread(&field.access_flags,sizeof(field.access_flags),1,fd);
     field.access_flags = be16toh(field.access_flags);

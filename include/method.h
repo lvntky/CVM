@@ -19,5 +19,5 @@ typedef enum method_access_flags{
     M_ACC_SYNTHETIC 	  = 0x1000 	// Declared synthetic; not present in the source code.
 }method_access_flags;
 
-#define getMethod_Info(fd) getField_Info(fd) // same too, no need to reimplement
+#define getMethod_Info(fd) parse_filed_info(fd) // same too, no need to reimplement
 #endif
