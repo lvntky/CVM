@@ -3,20 +3,18 @@
 #include <stdlib.h>
 #include <string.h>
 
-attribute_info parse_attribute_info(FILE* file)
+attribute_info parse_attribute_info(FILE* fd)
 {
-  attribute_info attribute_info;
-  fread(&attribute_info.attribute_name_index, sizeof(attribute_info.attribute_name_index), 1, file);
-  attribute_info.attribute_name_index = be16toh(attribute_info.attribute_name_index);
+  attribute_info attribute;
+    fread(&attribute.attribute_name_index,sizeof(attribute.attribute_name_index),1,fd);
+    attribute.attribute_name_index = be16toh(attribute.attribute_name_index);
 
-  fread(&attribute_info.attribute_length, sizeof(attribute_info.attribute_length), 1, file);
-  attribute_info.attribute_length = be32toh(attribute_info.attribute_length);
+    fread(&attribute.attribute_length,sizeof(attribute.attribute_length),1,fd);
+    attribute.attribute_length = be32toh(attribute.attribute_length);
 
-  attribute_info.info = malloc(attribute_info.attribute_length);
-  fread(&attribute_info.info, attribute_info.attribute_length, 1, file);
-
-  fclose(file);
-  return attribute_info;
+    attribute.info = malloc(attribute.attribute_length); // leak
+    fread(attribute.info,attribute.attribute_length,1,fd);
+    return attribute;
 }
 Code_attribute get_code_attribute(attribute_info attributeInfo)
 {
