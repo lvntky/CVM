@@ -3,8 +3,8 @@
 ![GitHub](https://img.shields.io/github/license/lvntky/cvm)
 ![GitHub issues](https://img.shields.io/github/issues/lvntky/cvm)
 
-<p align="center" style="width: 350px; height: 350px;">
-  <img src="https://github.com/lvntky/CVM/blob/master/docs/banner.jpg?raw=true" alt="Graphic design is my passion"/>
+<p align="center">
+  <img style="width: 350px; height: 350px;" src="https://github.com/lvntky/CVM/blob/master/docs/banner.jpg?raw=true" alt="Graphic design is my passion"/>
 </p>
 
 
