@@ -3,7 +3,10 @@
 ![GitHub](https://img.shields.io/github/license/lvntky/cvm)
 ![GitHub issues](https://img.shields.io/github/issues/lvntky/cvm)
 
-<img src="./docs/banner.jpg"  width="350" height="350">
+<p align="center" style="width: 350px; height: 350px;">
+  <img src="https://github.com/lvntky/CVM/blob/master/docs/banner.jpg?raw=true" alt="Graphic design is my passion"/>
+</p>
+
 
 A toy Java Virtual Machine coded in C
 
